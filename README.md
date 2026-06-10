@@ -186,8 +186,8 @@ functions:
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/yourusername/clinic-rag.git
-cd clinic-rag
+git clone https://github.com/soham04mehra/Clinic_RAG.git
+cd Clinic_Rag
 ```
 
 **2. Install dependencies**
@@ -253,9 +253,9 @@ streamlit run streamlit_app.py
 
 ## 👤 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [your-linkedin](https://linkedin.com/in/your-linkedin)
+**Soham Mehra**
+- GitHub: [@soham04mehra](https://github.com/soham04mehra)
+- LinkedIn: [Soham Mehra](https://www.linkedin.com/in/soham-mehra-b5360a375/)
 
 ---
 
