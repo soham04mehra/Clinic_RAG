@@ -1,0 +1,13 @@
+streamlit
+supabase
+langchain
+langchain-google-genai
+langgraph
+fastembed
+rank-bm25
+httpx
+python-dotenv
+pydantic
+ragas
+datasets
+numpy
