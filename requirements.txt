@@ -11,3 +11,4 @@ pydantic
 ragas
 datasets
 numpy
+langchain-groq
