@@ -12,6 +12,7 @@ Recall@10                       39.2%               55.4%  (+16.2% net gain)
 Recall@20                       40.4%               55.4%  (+15.0% net gain)
 MRR (Rank 1 Quality)            N/A                 1.000  (Perfect #1 rank relevance) 🥇
 NDCG@5 (Position Discount)       N/A                 1.000  (Perfect ranking curve)
+Average Latency                 ~1099.2 ms          993.8 ms (Dense: 801.5 ms | Sparse: 976.9 ms)
 Result Overlap (Top 5)          39.9%               27.7%  (Hybrid brings 72.3% NEW relevant chunks)
 --------------------------------------------------------------------------------
 
