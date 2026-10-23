@@ -9,7 +9,7 @@ def dense_search(
     condition: str = None,
     drug_name: str = None,
     phase: str = None,
-    top_k: int = 10,
+    top_k: int = 30,
 ) -> list[dict]:
     query_vector = list(embedding_model.embed([query]))[0].tolist()
     db = get_supabase()
