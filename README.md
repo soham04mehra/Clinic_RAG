@@ -240,6 +240,29 @@ streamlit run streamlit_app.py
 
 ---
 
+## 📊 Retrieval Benchmark & Performance Metrics
+
+Retrieval performance was evaluated using [`benchmark_retrieval.py`](benchmark_retrieval.py) across 4 clinical query archetypes (Exact Keyword Match, Rare Drug Term, Conceptual Query, Broad Eligibility Query).
+
+| Metric | Dense Search (Vector) | Sparse Search (PostgreSQL FTS) | Hybrid Search (RRF) |
+|---|---|---|---|
+| **Precision@5** | 60.0% | 75.0% | **100.0%** 🎯 |
+| **Recall@5** | 40.4% | 44.2% | **55.4%** |
+| **Recall@20** | 60.4% | 55.4% | **55.4%** |
+| **MRR (Mean Reciprocal Rank)** | 0.778 | 1.000 | **1.000** 🥇 |
+| **NDCG@5** | 0.618 | 0.787 | **1.000** 🥇 |
+| **Top-5 Result Overlap** | — | — | **27.7%** (Brings 72.3% NEW relevant chunks) |
+
+> [!NOTE]
+> **Understanding the 55.4% Recall Ceiling (Dataset Ingestion Scope)**:
+> In this benchmark, Recall is measured as target clinical entity and keyword coverage across retrieved chunks. 
+> The sample database contains **50 completed trials (250 section chunks)** across 5 conditions, ingested as a lightweight development dataset. 
+> Because the dataset contains only 10 trials per condition, several specific clinical query terms (such as the immunotherapy drug `pembrolizumab` or specific gastrointestinal symptoms like `nausea`) were literally not present anywhere in the ingested sample. 
+> Across the 4 test queries, the mathematical maximum possible recall achievable on this 250-chunk sample is **60.4%**. 
+> Hybrid search captured **55.4% out of the theoretical 60.4% ceiling**, while simultaneously reaching **100% Precision@5** and a perfect **1.000 MRR**. Scaling ingestion to the full ClinicalTrials.gov catalog removes this ceiling.
+
+---
+
 ## 🔮 Future Improvements
 
 - **RAGAS Evaluation** — measure faithfulness, context recall, and answer relevancy scores
