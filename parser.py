@@ -1,19 +1,21 @@
-def _meta_header(trial_info: dict, section_name: str) -> str:
-    """Build the standard metadata header used for non-AdverseEvents sections."""
+def _meta_header(trial_info: dict, section_name: str, brief_summary: str = "") -> str:
+    """Build the standard metadata header with brief study context to prevent section fragmentation."""
+    summary_snippet = f" | Focus: {brief_summary[:200]}" if brief_summary else ""
     return (
         f"Trial ID: {trial_info['nct_id']}\n"
         f"Title: {trial_info['title']}\n"
         f"Condition: {trial_info['condition']} | Drug: {trial_info['drug_name']} | "
-        f"Phase: {trial_info['phase']} | Status: {trial_info['status']}\n"
+        f"Phase: {trial_info['phase']} | Status: {trial_info['status']}{summary_snippet}\n"
         f"Section: {section_name}\n\n"
     )
 
 
-def adverse_events_to_section(ae_data: dict) -> str:
-    """Format the adverse events data dictionary into a readable text block."""
+def adverse_events_to_section(ae_data: dict, brief_summary: str = "") -> str:
+    """Format the adverse events data dictionary into a readable text block with trial context."""
+    summary_snippet = f" | Focus: {brief_summary[:200]}" if brief_summary else ""
     lines = [
         f"Trial ID: {ae_data['nct_id']}",
-        f"Drug: {ae_data['drug']} | Condition: {ae_data['condition']} | Phase: {ae_data['phase']}",
+        f"Drug: {ae_data['drug']} | Condition: {ae_data['condition']} | Phase: {ae_data['phase']}{summary_snippet}",
         f"Total Patients: {ae_data['total_patients']} | Deaths Reported: {ae_data['deaths']}",
         "",
         "SERIOUS EVENTS:",
@@ -138,15 +140,15 @@ def trial_to_sections(trial: dict, condition: str) -> list[dict]:
 
         rows = [
             make_row(0, "Summary",
-                     _meta_header(trial_info, "Summary") + summary_text),
+                     _meta_header(trial_info, "Summary", summary_text) + summary_text),
             make_row(1, "Description",
-                     _meta_header(trial_info, "Description") + detail_text),
+                     _meta_header(trial_info, "Description", summary_text) + detail_text),
             make_row(2, "Eligibility",
-                     _meta_header(trial_info, "Eligibility") + eligibility_text),
+                     _meta_header(trial_info, "Eligibility", summary_text) + eligibility_text),
             make_row(3, "Outcomes",
-                     _meta_header(trial_info, "Outcomes") + outcomes_text),
+                     _meta_header(trial_info, "Outcomes", summary_text) + outcomes_text),
             make_row(4, "AdverseEvents",
-                     adverse_events_to_section(ae_data)),
+                     adverse_events_to_section(ae_data, summary_text)),
         ]
 
         return rows

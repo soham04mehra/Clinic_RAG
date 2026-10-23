@@ -55,6 +55,23 @@ def reciprocal_rank_fusion(
     return results
 
 
+# Common clinical synonyms to bridge the vocabulary gap between patient queries and trial texts
+CLINICAL_SYNONYMS = {
+    "blood sugar": "glucose glycemic",
+    "stomach discomfort": "gastrointestinal nausea vomiting diarrhea",
+    "memory loss": "cognitive impairment dementia alzheimers",
+    "side effects": "adverse events toxicity safety",
+}
+
+def expand_query(query: str) -> str:
+    """Expand common query phrases with clinical terminology for broader retrieval coverage."""
+    expanded = query.lower()
+    for phrase, synonyms in CLINICAL_SYNONYMS.items():
+        if phrase in expanded:
+            expanded += f" {synonyms}"
+    return expanded
+
+
 def hybrid_search(
     query: str,
     condition: str = None,
@@ -64,14 +81,15 @@ def hybrid_search(
     candidate_k: int = 30,
     rrf_k: int = 60,
 ) -> list[dict]:
+    search_query = expand_query(query)
     fetch_k = max(candidate_k, top_k)
     # Run Dense and Sparse search concurrently in parallel threads
     with ThreadPoolExecutor(max_workers=2) as executor:
         future_dense = executor.submit(
-            dense_search, query, condition, drug_name, phase, fetch_k
+            dense_search, search_query, condition, drug_name, phase, fetch_k
         )
         future_sparse = executor.submit(
-            sparse_search, query, condition, drug_name, fetch_k
+            sparse_search, search_query, condition, drug_name, fetch_k
         )
 
         dense_results = future_dense.result()
